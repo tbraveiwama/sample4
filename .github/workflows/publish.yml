@@ -1,13 +1,57 @@
-name: Publish to npm
+name: Auto Deploy
 
 on:
   push:
     branches: [master]
-
   workflow_dispatch:
 
 jobs:
-  log:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - run: echo "masterブランチがプッシュされました"
+      - name: CheckOut
+        uses: actions/checkout@v4
+
+      - name: Package Install
+        run: npm ci
+
+      - name: Build File
+        run: npm run build
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: build
+    steps:
+      - name: CheckOut
+        uses: actions/checkout@v4
+
+      - name: gh-pages Install
+        run: npm install gh-pages
+
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+         name: dist-files
+         path: dist
+
+      - name: Deploy To GitHub Pages
+        run: npm run deploy
+
+
+
+
+
+
+
+
+
