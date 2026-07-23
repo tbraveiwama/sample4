@@ -35,9 +35,6 @@ jobs:
       - name: CheckOut
         uses: actions/checkout@v4
 
-      - name: gh-pages Install
-        run: npm install gh-pages
-
       - name: Download
         uses: actions/download-artifact@v4
         with:
@@ -45,7 +42,9 @@ jobs:
          path: dist
 
       - name: Deploy To GitHub Pages
-        run: npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx gh-pages -d dist -r https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
 
 
 
