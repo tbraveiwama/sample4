@@ -60,7 +60,7 @@ export default function Janken() {
         <>
             <h1>じゃんけん</h1>
             <button type="button" onClick={start}>開始する</button>
-            <button type="button" onClick={end}>終了</button>
+            <button type="button" onClick={end}>終了する</button>
             {game && (
                 <select.Provider value={selected}>
                 <Game
