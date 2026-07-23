@@ -38,11 +38,15 @@ jobs:
       - name: Download
         uses: actions/download-artifact@v4
         with:
-         name: dist-files
-         path: dist
+          name: dist-files
+          path: dist
+
+      - name: Git Config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy To GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx gh-pages -d dist -r https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-
